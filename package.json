@@ -20,6 +20,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

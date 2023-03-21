@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const swagger = require('./swagger');
 const cors = require('cors');
 const movieRoutes = require('./routes/movies');
 const jwt = require('jsonwebtoken');
@@ -38,6 +39,8 @@ db.once('open', () => {
     const token = jwt.sign({}, 'test_key', { expiresIn: '1h' });
     res.json({ token });
   });
+
+  app.use(swagger);
 
   app.use(
     `${baseUrl}/movies`,
