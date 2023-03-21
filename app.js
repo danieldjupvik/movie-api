@@ -50,7 +50,11 @@ db.once('open', () => {
         next();
       } catch (err) {
         // If the token is invalid or missing, send a 401 Unauthorized response
-        res.status(401).send('Invalid or missing token');
+        res
+          .status(401)
+          .send(
+            'Invalid or missing token, go to "/api/generate/token" to get an token and then use the token like this "/api/movies?token=[[token]]"'
+          );
       }
     },
     movieRoutes
