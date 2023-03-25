@@ -2,30 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Movie = require('../models/index');
 
-/**
- * @swagger
- * tags:
- *   name: Movies
- *   description: API for managing movies
- */
-
-/**
- * @swagger
- * /movies:
- *   get:
- *     summary: Retrieve a list of movies
- *     description: Returns a list of movies with their id, title and release year
- *     tags:
- *      - Movies
- *     parameters:
- *       - in: query
- *         name: token
- *         required: true
- *         description: API authorization token
- *         schema:
- *           type: string
- */
-
 router.get('/', async (req, res) => {
   try {
     const movies = await Movie.find().select('_id title year');
@@ -35,29 +11,6 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-/**
- * @swagger
- * /movies/{id}:
- *   get:
- *     summary: Get a movie by ID
- *     description: Returns a single movie object by ID
- *     tags:
- *       - Movies
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID of the movie to retrieve
- *       - in: query
- *         name: token
- *         schema:
- *           type: string
- *         required: true
- *         description: API authorization token
- */
 
 router.get('/:id', async (req, res) => {
   try {
@@ -69,22 +22,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-/**
- * @swagger
- * /movies/add:
- *   post:
- *     summary: Add a new movie to the database
- *     tags:
- *       - Movies
- *     parameters:
- *       - in: query
- *         name: token
- *         schema:
- *           type: string
- *         required: true
- *         description: API authorization token
- */
 
 router.post('/add', async (req, res) => {
   const { title, description, year, poster, rating } = req.body;
@@ -100,27 +37,6 @@ router.post('/add', async (req, res) => {
     res.status(500).send('An error occurred while adding the movie.');
   }
 });
-
-/**
- * @swagger
- * /movies/update/{id}:
- *   put:
- *     summary: Update a movie by ID
- *     tags: [Movies]
- *     parameters:
- *       - name: id
- *         in: path
- *         description: ID of the movie to update
- *         required: true
- *         schema:
- *           type: string
- *       - in: query
- *         name: token
- *         schema:
- *           type: string
- *         required: true
- *         description: API authorization token
- */
 
 router.put('/update/:id', async (req, res) => {
   try {
@@ -143,31 +59,6 @@ router.put('/update/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-/**
- * @swagger
- * /movies/{id}:
- *   delete:
- *     summary: Delete a movie by ID
- *     description: Delete a movie by its ID from the database.
- *     tags:
- *       - Movies
- *     parameters:
- *       - in: path
- *         name: id
- *         description: ID of the movie to delete.
- *         required: true
- *         schema:
- *           type: string
- *       - in: query
- *         name: token
- *         schema:
- *           type: string
- *         required: true
- *         description: API authorization token
- *     security:
- *       - bearerAuth: []
- */
 
 router.delete('/:id', async (req, res) => {
   try {

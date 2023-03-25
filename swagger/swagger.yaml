@@ -1,0 +1,142 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: 'Movie API'
+basePath: '/api'
+schemes:
+  - 'http'
+  - 'https'
+consumes:
+  - 'application/json'
+produces:
+  - 'application/json'
+securityDefinitions:
+  JWT:
+    type: 'apiKey'
+    name: 'Authorization'
+    in: 'header'
+    description: 'JWT token. Format: Bearer {token}'
+paths:
+  /health:
+    get:
+      description: 'Check server health'
+      produces:
+        - 'text/plain'
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            type: 'string'
+          examples:
+            text/plain: 'Server is up and running!'
+  /generate/token:
+    get:
+      description: 'Generate JWT token with a 1-hour expiration time'
+      produces:
+        - 'application/json'
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            type: 'object'
+            properties:
+              token:
+                type: 'string'
+  /movies:
+    get:
+      description: 'Get a list of all movies'
+      produces:
+        - 'application/json'
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Movie'
+      security:
+        - JWT: []
+    post:
+      description: 'Add a new movie'
+      consumes:
+        - 'application/json'
+      parameters:
+        - name: 'movie'
+          in: 'body'
+          required: true
+          schema:
+            $ref: '#/definitions/MovieInput'
+      responses:
+        201:
+          description: 'Created'
+          schema:
+            $ref: '#/definitions/Movie'
+      security:
+        - JWT: []
+    put:
+      description: 'Update an existing movie'
+      consumes:
+        - 'application/json'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          required: true
+          type: 'string'
+        - name: 'movie'
+          in: 'body'
+          required: true
+          schema:
+            $ref: '#/definitions/MovieInput'
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            $ref: '#/definitions/Movie'
+      security:
+        - JWT: []
+    delete:
+      description: 'Delete an existing movie'
+      parameters:
+        - name: 'id'
+          in: 'path'
+          required: true
+          type: 'string'
+      responses:
+        200:
+          description: 'OK'
+          schema:
+            $ref: '#/definitions/Movie'
+      security:
+        - JWT: []
+definitions:
+  Movie:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+      title:
+        type: 'string'
+      description:
+        type: 'string'
+      year:
+        type: 'number'
+      poster:
+        type: 'string'
+      rating:
+        type: 'number'
+  MovieInput:
+    type: 'object'
+    properties:
+      title:
+        type: 'string'
+      description:
+        type: 'string'
+      year:
+        type: 'number'
+      poster:
+        type: 'string'
+      rating:
+        type: 'number'
+    required:
+      - title
+      - year

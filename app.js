@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const swagger = require('./swagger');
+const swagger = require('./swagger/swagger');
 const cors = require('cors');
 const movieRoutes = require('./routes/movies');
 const jwt = require('jsonwebtoken');
