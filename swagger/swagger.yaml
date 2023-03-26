@@ -44,6 +44,15 @@ paths:
       description: 'Get a list of all movies'
       produces:
         - 'application/json'
+      parameters:
+        - name: 'sort'
+          in: 'query'
+          description: 'Sort by field (e.g. year, rating, title). Prefix with - for descending order (e.g. -year).'
+          type: 'string'
+        - name: 'filter'
+          in: 'query'
+          description: 'Filter by title or description. Partial match is supported.'
+          type: 'string'
       responses:
         200:
           description: 'OK'
@@ -70,6 +79,7 @@ paths:
             $ref: '#/definitions/Movie'
       security:
         - JWT: []
+  /movies/{id}:
     put:
       description: 'Update an existing movie'
       consumes:

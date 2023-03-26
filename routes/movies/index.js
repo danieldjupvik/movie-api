@@ -4,7 +4,23 @@ const Movie = require('../models/index');
 
 router.get('/', async (req, res) => {
   try {
-    const movies = await Movie.find().select('_id title year');
+    // Read query parameters for filtering and sorting
+    const { title, year, sortBy, order } = req.query;
+
+    // Build the query object for filtering
+    let query = {};
+    if (title) query.title = new RegExp(title, 'i');
+    if (year) query.year = year;
+
+    // Determine the sorting field and order
+    let sort = {};
+    if (sortBy) {
+      sort[sortBy] = order === 'desc' ? -1 : 1;
+    }
+
+    // Execute the query with filtering and sorting
+    const movies = await Movie.find(query).select('_id title year').sort(sort);
+
     res.json(movies);
   } catch (err) {
     console.error(err);
