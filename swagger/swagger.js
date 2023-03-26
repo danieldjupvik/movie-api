@@ -8,14 +8,11 @@ const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 
 const options = {
-  swaggerOptions: {
-    customCssUrl:
-      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.1/swagger-ui.css',
-  },
+  customCssUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.1/swagger-ui.css',
 };
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+// Set up Swagger UI
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 // Export the app
