@@ -16,9 +16,8 @@ if (process.env.NODE_ENV === 'prod') {
 
 const options = {
   customCssUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.1/swagger-ui.css',
-  customfavIcon:
-    'https://static1.smartbear.co/swagger/media/assets/swagger_fav.png',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.1/swagger-ui.min.css',
+  customfavIcon: '/images/swagger_fav.png',
 };
 
 // Set up Swagger UI
