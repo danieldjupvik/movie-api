@@ -7,6 +7,14 @@ const app = express();
 
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 
+// Set the Swagger schemes based on the environment
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'prod') {
+  swaggerDocument.schemes = ['https'];
+} else {
+  swaggerDocument.schemes = ['http'];
+}
+
 const options = {
   customCssUrl:
     'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.1/swagger-ui.css',

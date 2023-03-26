@@ -3,9 +3,6 @@ info:
   version: '1.0.0'
   title: 'Movie API'
 basePath: '/api'
-schemes:
-  - 'http'
-  - 'https'
 consumes:
   - 'application/json'
 produces:
