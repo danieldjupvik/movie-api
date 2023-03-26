@@ -15,17 +15,17 @@ const hideVProperty = require('./middleware/hideVProperty');
 const app = express();
 const port = 6075;
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'img-src': ["'self'", 'data:', 'static1.smartbear.co'],
-        'style-src': ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+//         'img-src': ["'self'", 'data:', 'static1.smartbear.co'],
+//         'style-src': ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
+//       },
+//     },
+//   })
+// );
 app.use(express.json());
 app.use(cors());
 app.use(limiter);
