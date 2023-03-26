@@ -10,7 +10,7 @@ const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 const options = {
   customCssUrl:
     'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.1/swagger-ui.css',
-  faviconUrl:
+  customfavIcon:
     'https://static1.smartbear.co/swagger/media/assets/swagger_fav.png',
 };
 
