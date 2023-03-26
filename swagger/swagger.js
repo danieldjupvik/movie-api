@@ -8,7 +8,6 @@ const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 
 // Set the Swagger schemes based on the environment
-console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'prod') {
   swaggerDocument.schemes = ['https'];
 } else {

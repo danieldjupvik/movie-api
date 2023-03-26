@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/index');
+const { Movie } = require('../models/index');
 
 router.get('/', async (req, res) => {
   try {
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     }
 
     // Execute the query with filtering and sorting
-    const movies = await Movie.find(query).select('_id title year').sort(sort);
+    const movies = await Movie.find(query).sort(sort);
 
     res.json(movies);
   } catch (err) {
