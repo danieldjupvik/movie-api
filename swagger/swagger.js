@@ -15,15 +15,11 @@ if (process.env.NODE_ENV === 'prod') {
 }
 
 const options = {
+  customCssUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.1/swagger-ui.css',
   customfavIcon:
     'https://static1.smartbear.co/swagger/media/assets/swagger_fav.png',
 };
-
-// Serve the swagger-ui static assets
-app.use(
-  '/swagger',
-  express.static(path.join(__dirname, 'node_modules/swagger-ui/dist'))
-);
 
 // Set up Swagger UI
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
