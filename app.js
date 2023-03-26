@@ -32,6 +32,7 @@ app.use(express.json());
 app.use(cors());
 app.use(limiter);
 app.use(hideVProperty);
+app.use(express.static('public'));
 
 const baseUrl = '/api';
 const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@hobby.4johwy7.mongodb.net/movie_db?retryWrites=true&w=majority`;
