@@ -2,6 +2,8 @@
   "builds": [{ "src": "app.js", "use": "@vercel/node" }],
   "routes": [{ "src": "/(.*)", "dest": "/app.js" }],
   "env": {
-    "NODE_ENV": "prod"
+    "NODE_ENV": "prod",
+    "JWT_SECRET": "tvSv9EOoSlMnAmr+yf0+A1JlG3ZAON7RVT8l4Hfu6V4=",
+    "JWT_EXPIRES_IN": "1h"
   }
 }

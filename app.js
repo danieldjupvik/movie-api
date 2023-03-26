@@ -1,16 +1,22 @@
 require('dotenv').config();
 const express = require('express');
+const authMiddleware = require('./middleware/auth');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const swagger = require('./swagger/swagger');
-const cors = require('cors');
 const movieRoutes = require('./routes/movies');
-const jwt = require('jsonwebtoken');
+const limiter = require('./middleware/rateLimit');
+const tokenRoutes = require('./routes/token');
+const healthRoutes = require('./routes/health');
+const helmet = require('helmet');
 
 const app = express();
 const port = 6075;
 
+app.use(helmet());
 app.use(express.json());
 app.use(cors());
+app.use(limiter);
 
 const baseUrl = '/api';
 const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@hobby.4johwy7.mongodb.net/movie_db?retryWrites=true&w=majority`;
@@ -29,52 +35,31 @@ db.on('error', (err) => {
 
 db.once('open', () => {
   console.log('Connected to MongoDB database!');
-
-  app.get(`${baseUrl}/health`, (req, res) => {
-    res.status(200).send('Server is up and running!');
-  });
-
-  app.get(`${baseUrl}/generate/token`, (req, res) => {
-    // Generate a new JWT token with a 1-hour expiration time
-    const token = jwt.sign({}, 'test_key', { expiresIn: '1h' });
-    res.json({ token });
-  });
-
   app.use(swagger);
+  app.use(`${baseUrl}/health`, healthRoutes);
+  app.use(`${baseUrl}/generate/token`, tokenRoutes);
+  app.use(`${baseUrl}/movies`, authMiddleware, movieRoutes);
 
-  app.use(
-    `${baseUrl}/movies`,
-    (req, res, next) => {
-      // Check for token in URL query and Authorization header
-      const token = req.query.token;
-      const authHeader = req.headers.authorization;
-      const bearerToken =
-        authHeader && authHeader.startsWith('Bearer ')
-          ? authHeader.split(' ')[1]
-          : null;
+  // Catch 404 errors
+  app.use((req, res, next) => {
+    const error = new Error('Not Found');
+    error.status = 404;
+    next(error);
+  });
 
-      const authToken = token || bearerToken;
+  // Centralized error handling
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    const status = err.status || 500;
+    const message = err.message || 'Internal Server Error';
+    res.status(status).json({ error: message });
+  });
 
-      if (!authToken) {
-        return res
-          .status(401)
-          .send(
-            'Invalid or missing token, go to "/api/generate/token" to get a token and then use the token in the URL query or the Authorization header.'
-          );
-      }
-
-      try {
-        // Verify the token and attach it to the request object if it's valid
-        const decoded = jwt.verify(authToken, 'test_key');
-        req.token = decoded;
-        next();
-      } catch (err) {
-        // If the token is invalid, send a 401 Unauthorized response
-        res.status(401).send('Invalid token');
-      }
-    },
-    movieRoutes
-  );
+  // Log errors
+  app.use((err, req, res, next) => {
+    console.error(err);
+    next(err);
+  });
 
   app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
