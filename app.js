@@ -35,7 +35,7 @@ app.use(hideVProperty);
 app.use(express.static('public'));
 
 const baseUrl = '/api';
-const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@hobby.4johwy7.mongodb.net/movie_db?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@hobby.ie557lw.mongodb.net/movie_db?retryWrites=true&w=majority`;
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
