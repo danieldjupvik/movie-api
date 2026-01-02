@@ -23,6 +23,7 @@ app.use(
         'img-src': ["'self'", 'data:', '*'],
         'style-src': ["'self'", "'unsafe-inline'", '*'],
         'style-src-elem': ["'self'", "'unsafe-inline'", '*'],
+        'script-src': ["'self'", 'https://vercel.live'],
       },
     },
   })
@@ -35,7 +36,7 @@ app.use(hideVProperty);
 app.use(express.static('public'));
 
 const baseUrl = '/api';
-const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@hobby.4johwy7.mongodb.net/movie_db?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@hobby.ie557lw.mongodb.net/movie_db?retryWrites=true&w=majority`;
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
@@ -56,6 +57,10 @@ db.once('open', () => {
   app.use(`${baseUrl}/generate/token`, tokenRoutes);
   app.use(`${baseUrl}/movies`, authMiddleware, movieRoutes);
   app.use(`${baseUrl}/watchlist`, authMiddleware, watchlistRoutes);
+
+  app.get('/', (req, res) => {
+    res.redirect('/swagger');
+  });
 
   // Catch 404 errors
   app.use((req, res, next) => {
