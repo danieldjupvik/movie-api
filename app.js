@@ -23,6 +23,7 @@ app.use(
         'img-src': ["'self'", 'data:', '*'],
         'style-src': ["'self'", "'unsafe-inline'", '*'],
         'style-src-elem': ["'self'", "'unsafe-inline'", '*'],
+        'script-src': ["'self'", 'https://vercel.live'],
       },
     },
   })
@@ -56,6 +57,10 @@ db.once('open', () => {
   app.use(`${baseUrl}/generate/token`, tokenRoutes);
   app.use(`${baseUrl}/movies`, authMiddleware, movieRoutes);
   app.use(`${baseUrl}/watchlist`, authMiddleware, watchlistRoutes);
+
+  app.get('/', (req, res) => {
+    res.redirect('/swagger');
+  });
 
   // Catch 404 errors
   app.use((req, res, next) => {
